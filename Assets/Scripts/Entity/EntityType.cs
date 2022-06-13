@@ -1,6 +1,6 @@
 using System;
 
-namespace Wingmann.Project.Entity
+namespace Wingmann.Project.Entities
 {
     [Flags]
     public enum EntityType

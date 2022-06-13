@@ -1,9 +1,9 @@
-﻿namespace Wingmann.Project.Entity
+﻿namespace Wingmann.Project.Entities
 {
     /// <summary>
     /// 
     /// </summary>
-    public class Entity
+    public class Entity : IEntity
     {
         /// <summary>
         /// 
