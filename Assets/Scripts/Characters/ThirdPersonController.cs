@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using Wingmann.Project.InputSystem;
+using Wingmann.Project.InputManagement;
 
 // Note: animations are called via the controller for both the character and capsule using animator null checks.
 
-namespace Wingmann.Project
+namespace Wingmann.Project.Characters
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(PlayerInput))]
@@ -177,15 +177,15 @@ namespace Wingmann.Project
         private void CameraRotation()
         {
             // If there is an input and camera position is not fixed.
-            if ((_input.look.sqrMagnitude >= _threshold) && (LockCameraPosition is false))
+            if ((_input.Look.sqrMagnitude >= _threshold) && (LockCameraPosition is false))
             {
                 // Don't multiply mouse input by Time.deltaTime;
                 float deltaTimeMultiplier = IsCurrentDeviceMouse
                     ? 1.0f
                     : Time.deltaTime;
 
-                _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-                _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
+                _cinemachineTargetYaw += _input.Look.x * deltaTimeMultiplier;
+                _cinemachineTargetPitch += _input.Look.y * deltaTimeMultiplier;
             }
 
             // Clamp our rotations so our values are limited 360 degrees.
@@ -202,14 +202,14 @@ namespace Wingmann.Project
         private void Move()
         {
             // Set target speed based on move speed, sprint speed and if sprint is pressed.
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            float targetSpeed = _input.Sprint ? SprintSpeed : MoveSpeed;
 
             // A simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon.
 
             // Note: Vector2's operator == uses approximation so is not floating point error prone,
             // and is cheaper than magnitude.
             // If there is no input, set the target speed to default.
-            if (_input.move == Vector2.zero)
+            if (_input.Move == Vector2.zero)
             {
                 targetSpeed = default;
             }
@@ -219,8 +219,8 @@ namespace Wingmann.Project
 
             float speedOffset = 0.1f;
 
-            float inputMagnitude = _input.analogMovement
-                ? _input.move.magnitude
+            float inputMagnitude = _input.AnalogMovement
+                ? _input.Move.magnitude
                 : 1.0f;
 
             // Accelerate or decelerate to target speed.
@@ -253,12 +253,12 @@ namespace Wingmann.Project
             }
 
             // Normalise input direction.
-            var inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            var inputDirection = new Vector3(_input.Move.x, 0.0f, _input.Move.y).normalized;
 
             // Note: Vector2's operator != uses approximation so is not floating point error prone,
             // and is cheaper than magnitude.
             // If there is a move input rotate player when the player is moving.
-            if (_input.move != Vector2.zero)
+            if (_input.Move != Vector2.zero)
             {
                 _targetRotation =
                     Mathf.Atan2(inputDirection.x, inputDirection.z) *
@@ -313,7 +313,7 @@ namespace Wingmann.Project
                 }
 
                 // Jump.
-                if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+                if (_input.Jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // The square root of H * -2 * G = how much velocity needed to reach desired height.
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2.0f * Gravity);
@@ -351,7 +351,7 @@ namespace Wingmann.Project
                 }
 
                 // If we are not grounded, do not jump.
-                _input.jump = false;
+                _input.Jump = false;
             }
 
             // Apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time).

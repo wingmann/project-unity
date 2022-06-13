@@ -1,4 +1,4 @@
-﻿namespace Wingmann.Project.Entity
+﻿namespace Wingmann.Project.Entities
 {
     public interface IEntity
     {

@@ -1,8 +1,6 @@
-#nullable enable
-
 using UnityEngine;
 
-namespace Wingmann.Project.Entity
+namespace Wingmann.Project.Entities
 {
     /// <summary>
     /// Implements entity identifier.
