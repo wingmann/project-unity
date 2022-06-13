@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
-namespace Wingmann.Project
+namespace Wingmann.Project.Characters
 {
 	public class BasicRigidBodyPush : MonoBehaviour
 	{
-		public LayerMask pushLayers;
-		public bool canPush;
+		public LayerMask PushLayers;
+		public bool CanPush;
 
 		[Range(0.5f, 5.0f)]
-		public float strength = 1.1f;
+		public float Strength = 1.1f;
 
 		private void OnControllerColliderHit(ControllerColliderHit hit)
 		{
-			if (canPush)
+			if (CanPush)
 			{
 				PushRigidBodies(hit);
 			}
@@ -25,7 +25,7 @@ namespace Wingmann.Project
 			// Make sure we hit a non kinematic rigidbody.
 			var body = hit.collider.attachedRigidbody;
 
-			if (body == null || body.isKinematic)
+			if (body is null || body.isKinematic)
 			{
 				return;
 			}
@@ -33,7 +33,7 @@ namespace Wingmann.Project
 			// Make sure we only push desired layer(s).
 			var bodyLayerMask = 1 << body.gameObject.layer;
 
-			if ((bodyLayerMask & pushLayers.value) == 0)
+			if ((bodyLayerMask & PushLayers.value) is 0)
 			{
 				return;
 			}
@@ -48,7 +48,7 @@ namespace Wingmann.Project
 			var pushDir = new Vector3(hit.moveDirection.x, 0.0f, hit.moveDirection.z);
 
 			// Apply the push and take strength into account.
-			body.AddForce(pushDir * strength, ForceMode.Impulse);
+			body.AddForce(pushDir * Strength, ForceMode.Impulse);
 		}
 	}
 }
